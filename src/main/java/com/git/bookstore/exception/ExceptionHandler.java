@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 
 @ControllerAdvice
 public class ExceptionHandler {
-
-    //Exception handler method
+    /*
+         this Exception handler method use to handle Exception
+    */
     @org.springframework.web.bind.annotation.ExceptionHandler(CustomException.class)
     public ResponseEntity<ResponseDTO> getUserByIdException(CustomException customException) {
         ResponseDTO responseDTO = new ResponseDTO("Exception while searching for User", customException.getMessage());

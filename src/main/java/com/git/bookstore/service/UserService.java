@@ -15,23 +15,19 @@ import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
-
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     TokenUtility tokenUtility;
-
     @Autowired
     EmailService emailService;
-
     //Creating new User Account
     @Override
     public String addUser(UserDTO userDTO) {
         UserData userData = new UserData(userDTO);
         userRepository.save(userData);
         String token = TokenUtility.createToken(userData.getUserId());
-        //    emailService.sendMail(userDTO.email, "User successfully created", "Your account successfully created into Book Store ," + "\n\nyour details are :" + "\n User Id : " + userData.getUserId() + "" + "\n First Name : " + userData.getFirstName() + "" + "\n Last Name : " + userData.getLastName() + "" + "\n Email : " + userData.getEmail() + "" + "\n Address : " + userData.getAddress() + "" + "\n DOB : " + userData.getDOB() + "" + "\n password : " + userData.getPassword() + "" + "\n your id token is : " + token);
+        emailService.sendMail(userDTO.email, "User successfully created", "Your account successfully created into Book Store ," + "\n\nyour details are :" + "\n User Id : " + userData.getUserId() + "" + "\n First Name : " + userData.getFirstName() + "" + "\n Last Name : " + userData.getLastName() + "" + "\n Email : " + userData.getEmail() + "" + "\n Address : " + userData.getAddress() + "" + "\n DOB : " + userData.getDOB() + "" + "\n password : " + userData.getPassword() + "" + "\n your id token is : " + token);
         return token;
     }
     // Login user
