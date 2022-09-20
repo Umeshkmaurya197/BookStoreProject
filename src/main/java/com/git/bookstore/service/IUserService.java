@@ -12,7 +12,7 @@ public interface IUserService {
 
     String userLogIn(LoginDTO loginDTO);
 
-    Optional<UserData> getUserById(Long userId);
+    UserData getUserById(String token);
 
     List<UserData> getUserByFirstName(String firstName);
 

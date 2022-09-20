@@ -30,7 +30,7 @@ public class BookService implements IBookService {
         BookData bookData = new BookData(bookDTO);
         bookRepository.save(bookData);
         String token = TokenUtility.createToken(bookData.getBookId());
-        emailService.sendMail("umeshkmaurya22@gmail.com", "New book added successfully ", "New book added successfully ." + "\n New book details, " + "\n   Book Name         : " + bookDTO.bookName + "" + "\n   Author Name       : " + bookDTO.authorName + "" + "\n   Book Description : " + bookDTO.bookDescription + "" + "\n   Book Image         : " + bookDTO.bookImg + "" + "\n   Book Price          : $ " + bookDTO.price + "" + "\n   Book Quantity     : " + bookDTO.quantity + " .");
+     //   emailService.sendMail("umeshkmaurya22@gmail.com", "New book added successfully ", "New book added successfully ." + "\n New book details, " + "\n   Book Name         : " + bookDTO.bookName + "" + "\n   Author Name       : " + bookDTO.authorName + "" + "\n   Book Description : " + bookDTO.bookDescription + "" + "\n   Book Image         : " + bookDTO.bookImg + "" + "\n   Book Price          : $ " + bookDTO.price + "" + "\n   Book Quantity     : " + bookDTO.quantity + " .");
         return token;
     }
 
@@ -38,9 +38,8 @@ public class BookService implements IBookService {
         Using this method User can get book data by book id
     */
     @Override
-    public BookData getBookById(String token) {
-        Long bookId = tokenUtility.decodeToken(token);
-        return bookRepository.findById(bookId).orElseThrow(() -> new CustomException(" Book id " + bookId + " not exist in data base  "));
+    public BookData getBookById(int bookId) {
+       return bookRepository.findById(bookId).orElseThrow(() -> new CustomException(" Book id " + bookId + " not exist in data base  "));
     }
 
     /*
@@ -75,7 +74,7 @@ public class BookService implements IBookService {
     @Override
     public String deleteBookByName(String bookName) {
         Optional<BookData> bookData = bookRepository.findBooksByName(bookName);
-        Long bookId = bookData.get().getBookId();
+        int bookId = bookData.get().getBookId();
         if (bookData.isPresent()) {
             bookRepository.deleteById(bookId);
             return " Book deleted successfully ";
@@ -89,7 +88,7 @@ public class BookService implements IBookService {
     */
     @Override
     public BookData updateBookById(String token, BookDTO bookDTO) {
-        Long bookId = tokenUtility.decodeToken(token);
+        int bookId = tokenUtility.decodeToken(token);
         Optional<BookData> bookData = bookRepository.findById(bookId);
         if (bookData.isPresent()) {
             BookData newBookData = new BookData(bookDTO);
@@ -105,7 +104,7 @@ public class BookService implements IBookService {
     */
     @Override
     public BookData updateBookQuantity(String token, Integer bookQuantity) {
-        Long bookId = tokenUtility.decodeToken(token);
+        int bookId = tokenUtility.decodeToken(token);
         Optional<BookData> bookData = bookRepository.findById(bookId);
         if (bookData.isPresent()) {
             BookData newBookData = bookRepository.getBookById(bookId);
@@ -124,9 +123,9 @@ public class BookService implements IBookService {
     public List<BookData> bookSortingByNameInAscending() {
         List<BookData> bookData = bookRepository.findAll();
         if (bookData.isEmpty()) {
-            return bookRepository.findAllBookByNameInAscending();
-        } else {
             throw new CustomException("Book List is Empty in data base ");
+        } else {
+            return bookRepository.findAllBookByNameInAscending();
         }
     }
 
@@ -137,9 +136,9 @@ public class BookService implements IBookService {
     public List<BookData> bookSortingByNameInDescending() {
         List<BookData> bookData = bookRepository.findAll();
         if (bookData.isEmpty()) {
-            return bookRepository.findAllBookByNameInDescending();
-        } else {
             throw new CustomException("Book List is Empty in data base ");
+        } else {
+            return bookRepository.findAllBookByNameInDescending();
         }
     }
 

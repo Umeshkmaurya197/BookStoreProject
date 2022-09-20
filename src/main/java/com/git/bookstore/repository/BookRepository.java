@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface BookRepository extends JpaRepository<BookData, Long> {
+public interface BookRepository extends JpaRepository<BookData, Integer> {
     @Query(value = "SELECT * FROM book_store.book_data e where e.book_name=:bookName", nativeQuery = true)
     Optional<BookData> findBooksByName(@Param(value = "bookName") String bookName);
 
@@ -18,7 +18,7 @@ public interface BookRepository extends JpaRepository<BookData, Long> {
 //    Optional<BookData> deleteBookByName(@Param(value = "bookName") String bookName);
 
     @Query(value = "SELECT * FROM book_store.book_data e where e.book_id=:bookId", nativeQuery = true)
-    BookData getBookById(@Param(value = "bookId") Long bookId);
+    BookData getBookById(@Param(value = "bookId") int bookId);
 
     @Query(value = "SELECT * FROM book_store.book_data e ORDER BY e.book_name ASC", nativeQuery = true)
     List<BookData> findAllBookByNameInAscending();

@@ -24,10 +24,10 @@ public class UserController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    //Curl - http://localhost:8080/book-store/user/get-user-by-id/1
-    @GetMapping("/get-user-by-id/{userId}")
-    public ResponseEntity<ResponseDTO> getUserById(@PathVariable Long userId) {
-        ResponseDTO responseDTO = new ResponseDTO("Based on user id " + userId + " found data ", userService.getUserById(userId));
+    //Curl - http://localhost:8080/book-store/user/get-user-by-id/
+    @GetMapping("/get-user-by-id")
+    public ResponseEntity<ResponseDTO> getUserById(@Param(value = "token")String token ) {
+        ResponseDTO responseDTO = new ResponseDTO("Based on user id  found data ", userService.getUserById(token));
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
     }
 

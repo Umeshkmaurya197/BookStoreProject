@@ -23,10 +23,10 @@ public class BookController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    //Curl - http://localhost:8080/book-store/book/get-book-by-id?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo1fQ.qK9H6yX6loZUr5GdSGDDZTbYK325l1IMZ0wwP1iv0aI
-    @GetMapping("/get-book-by-id")
-    public ResponseEntity<ResponseDTO> getBookById(@Param(value = "token") String token) {
-        ResponseDTO responseDTO = new ResponseDTO("Book on book id found book data", bookService.getBookById(token));
+    //Curl - http://localhost:8080/book-store/book/get-book-by-id/1
+    @GetMapping("/get-book-by-id/{bookId}")
+    public ResponseEntity<ResponseDTO> getBookById(@PathVariable int bookId) {
+        ResponseDTO responseDTO = new ResponseDTO("Book on book id found book data", bookService.getBookById(bookId));
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
     }
 
@@ -37,7 +37,7 @@ public class BookController {
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
     }
 
-    //Curl - http://localhost:8080/book-store/book/get-book-by-name/rich dad poor dad
+    //Curl - http://localhost:8080/book-store/book/get-book-by-name/the Richest Man In Babylon
     @GetMapping("/get-book-by-name/{bookName}")
     public ResponseEntity<ResponseDTO> getBooksByName(@PathVariable String bookName) {
         ResponseDTO responseDTO = new ResponseDTO("List of all books of same names ", bookService.getBooksByName(bookName));
@@ -51,7 +51,7 @@ public class BookController {
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    //Curl - http://localhost:8080/book-store/book/update-book-by-id?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxfQ.P6L7hDswFdV4TvI8KhmzIyVZM506iBf39vQbIkAvgVY
+    //Curl - http://localhost:8080/book-store/book/update-book-by-id?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozfQ.QkW4UdVXPaAtq9vpKLrXerNr-dWnjvmvvn5NL-e7ZjM
     @PutMapping("/update-book-by-id")
     public ResponseEntity<ResponseDTO> updateBookById(@Param(value = "token") String token, @RequestBody BookDTO bookDTO) {
         ResponseDTO responseDTO = new ResponseDTO("Updated book details  ", bookService.updateBookById(token, bookDTO));
@@ -64,13 +64,13 @@ public class BookController {
         ResponseDTO responseDTO = new ResponseDTO("Updated book quantity ", bookService.updateBookQuantity(token, bookQuantity));
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
     }
-    //http://localhost:8080/book-store/book/book-sorting-by-name-ascending
+    //Curl - http://localhost:8080/book-store/book/book-sorting-by-name-ascending
     @GetMapping("/book-sorting-by-name-ascending")
     public ResponseEntity<ResponseDTO> bookSortingByNameInAscending() {
         ResponseDTO responseDTO = new ResponseDTO("Sorted books by name in ascending order ", bookService.bookSortingByNameInAscending());
         return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
     }
-
+    //Curl - http://localhost:8080/book-store/book/book-sorting-by-name-descending
     @GetMapping("/book-sorting-by-name-descending")
     public ResponseEntity<ResponseDTO> bookSortingByNameInDescending() {
         ResponseDTO responseDTO = new ResponseDTO("Sorted books by name in descending order ", bookService.bookSortingByNameInDescending());

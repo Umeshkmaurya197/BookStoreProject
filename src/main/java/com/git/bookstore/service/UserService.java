@@ -27,13 +27,13 @@ public class UserService implements IUserService {
         UserData userData = new UserData(userDTO);
         userRepository.save(userData);
         String token = TokenUtility.createToken(userData.getUserId());
-        emailService.sendMail(userDTO.email, "User successfully created", "Your account successfully created into Book Store ," + "\n\nyour details are :" + "\n User Id : " + userData.getUserId() + "" + "\n First Name : " + userData.getFirstName() + "" + "\n Last Name : " + userData.getLastName() + "" + "\n Email : " + userData.getEmail() + "" + "\n Address : " + userData.getAddress() + "" + "\n DOB : " + userData.getDOB() + "" + "\n password : " + userData.getPassword() + "" + "\n your id token is : " + token);
+     //   emailService.sendMail(userDTO.email, "User successfully created", "Your account successfully created into Book Store ," + "\n\nyour details are :" + "\n User Id : " + userData.getUserId() + "" + "\n First Name : " + userData.getFirstName() + "" + "\n Last Name : " + userData.getLastName() + "" + "\n Email : " + userData.getEmail() + "" + "\n Address : " + userData.getAddress() + "" + "\n DOB : " + userData.getDOB() + "" + "\n password : " + userData.getPassword() + "" + "\n your id token is : " + token);
         return token;
     }
     // Login user
     @Override
     public String userLogIn(LoginDTO loginDTO) {
-        Optional<UserData> userDataExist = Optional.ofNullable(userRepository.findUserByLoginId(loginDTO.loginId).orElseThrow(() -> new CustomException("Entered user id " + loginDTO.loginId + " does not exist in data base ")));
+        Optional<UserData> userDataExist = Optional.ofNullable(userRepository.findUserByLoginId(loginDTO.email).orElseThrow(() -> new CustomException("Entered user id " + loginDTO.email + " does not exist in data base ")));
         if (userDataExist.get().getPassword().equals(loginDTO.getPassword())) {
             userDataExist.get().setLogin(true);
             return "Login Successfully";
@@ -42,12 +42,13 @@ public class UserService implements IUserService {
     }
     //get user by his userId
     @Override
-    public Optional<UserData> getUserById(Long userId) {
-        Optional<UserData> userData = userRepository.findById(userId);
-        if (userData.isPresent()) {
-            return userData;
-        } else {
+    public UserData getUserById(String token) {
+        int userId = tokenUtility.decodeToken(token);
+        UserData userData = userRepository.getUserById(userId);
+        if (userData==null) {
             throw new CustomException("User id " + userId + " not found in data base ");
+        } else {
+            return userData;
         }
     }
 
@@ -76,7 +77,7 @@ public class UserService implements IUserService {
     //change the password using token and password
     @Override
     public UserData changeUserPassword(String token, String password) {
-        Long userId = tokenUtility.decodeToken(token);
+        int userId = tokenUtility.decodeToken(token);
         UserData userData = userRepository.findById(userId).orElseThrow(() -> new CustomException("User id " + userId + " does not exist in data base ."));
         userData.setPassword(password);
         userRepository.save(userData);
@@ -87,7 +88,7 @@ public class UserService implements IUserService {
     @Override
     public UserData updateUserByEmail(String email, UserDTO userDTO) {
         Optional<UserData> userData = userRepository.findUserByEmail(email);
-        Long userId = userData.get().getUserId();
+        int userId = userData.get().getUserId();
         if (userData.isPresent()) {
             UserData userDTOData = new UserData(userDTO);
             userDTOData.setUserId(userId);

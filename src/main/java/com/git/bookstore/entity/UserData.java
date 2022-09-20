@@ -8,9 +8,9 @@ import java.time.LocalDate;
 @Entity
 public class UserData {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
-    private Long userId;
+    private int userId;
 
     private String firstName;
     private String lastName;
@@ -18,9 +18,7 @@ public class UserData {
     private String address;
     private LocalDate DOB;
     private String password;
-
     private boolean login;
-
     public UserData() {
     }
 
@@ -33,7 +31,7 @@ public class UserData {
         this.password = userDTO.password;
     }
 
-    public UserData(Long userId, String firstName, String lastName, String email, String address, LocalDate DOB, String password) {
+    public UserData(int userId, String firstName, String lastName, String email, String address, LocalDate DOB, String password) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -43,11 +41,11 @@ public class UserData {
         this.password = password;
     }
 
-    public Long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -105,5 +103,19 @@ public class UserData {
 
     public void setLogin(boolean login) {
         this.login = login;
+    }
+
+    @Override
+    public String toString() {
+        return "UserData{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", DOB=" + DOB +
+                ", password='" + password + '\'' +
+                ", login=" + login +
+                '}';
     }
 }

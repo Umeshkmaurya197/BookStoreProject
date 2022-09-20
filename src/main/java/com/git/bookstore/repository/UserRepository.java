@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<UserData, Long> {
+public interface UserRepository extends JpaRepository<UserData, Integer> {
+
+    @Query(value = "Select * from book_store.user_data e where e.user_id=:userId",nativeQuery = true)
+    UserData getUserById(@Param(value = "userId")int useId);
     @Query(value = "Select * from book_store.user_data e where e.first_name=:fName",nativeQuery = true)
     List<UserData> findUserByFirstName(@Param(value="fName")String firstName);
 

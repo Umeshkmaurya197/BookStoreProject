@@ -7,9 +7,9 @@ import javax.persistence.*;
 @Entity
 public class BookData {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id", nullable = false)
-    private Long bookId;
+    private int bookId;
 
     private String bookName;
     private String authorName;
@@ -30,7 +30,7 @@ public class BookData {
         this.quantity = bookDTO.quantity;
     }
 
-    public BookData(Long bookId, String bookName, String authorName, String bookDescription, String bookImg, Float price, Integer quantity) {
+    public BookData(int bookId, String bookName, String authorName, String bookDescription, String bookImg, Float price, Integer quantity) {
         this.bookId = bookId;
         this.bookName = bookName;
         this.authorName = authorName;
@@ -40,11 +40,11 @@ public class BookData {
         this.quantity = quantity;
     }
 
-    public Long getBookId() {
+    public int getBookId() {
         return bookId;
     }
 
-    public void setBookId(Long bookId) {
+    public void setBookId(int bookId) {
         this.bookId = bookId;
     }
 
@@ -96,4 +96,16 @@ public class BookData {
         this.quantity = quantity;
     }
 
+    @Override
+    public String toString() {
+        return "BookData{" +
+                "bookId=" + bookId +
+                ", bookName='" + bookName + '\'' +
+                ", authorName='" + authorName + '\'' +
+                ", bookDescription='" + bookDescription + '\'' +
+                ", bookImg='" + bookImg + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IBookService {
     String addNewBook(BookDTO bookDTO);
 
-    BookData getBookById(String token);
+    BookData getBookById(int bookId);
 
     List<BookData> getAllBooks();
 
