@@ -18,11 +18,28 @@ public interface BookRepository extends JpaRepository<BookData, Integer> {
 //    Optional<BookData> deleteBookByName(@Param(value = "bookName") String bookName);
 
     @Query(value = "SELECT * FROM book_store.book_data e where e.book_id=:bookId", nativeQuery = true)
-    BookData getBookById(@Param(value = "bookId") int bookId);
+    BookData getBookById(@Param(value = "bookId") Integer bookId);
+
+    // to get books based on user cartId
+    @Query(value = "SELECT b.* FROM book_data b INNER JOIN cart_books c ON b.book_id=c.book_id AND c.cart_id=:cartId ", nativeQuery = true)
+    List<BookData> getBookByCartId(@Param(value = "cartId") Integer cartId);
+
 
     @Query(value = "SELECT * FROM book_store.book_data e ORDER BY e.book_name ASC", nativeQuery = true)
     List<BookData> findAllBookByNameInAscending();
 
     @Query(value = "SELECT * FROM book_store.book_data e ORDER BY e.book_name DESC", nativeQuery = true)
     List<BookData> findAllBookByNameInDescending();
+
+    @Query(value = "SELECT * FROM book_store.book_data e ORDER BY e.price ASC", nativeQuery = true)
+    List<BookData> findAllBookByPriceInAscending();
+
+    @Query(value = "SELECT * FROM book_store.book_data e ORDER BY e.price DESC", nativeQuery = true)
+    List<BookData> findAllBookByPriceInDescending();
+
+    @Query(value = "SELECT * FROM book_store.book_data e ORDER BY e.book_id DESC", nativeQuery = true)
+    List<BookData> findAllBookByNewestArrival();
+
+
+
 }

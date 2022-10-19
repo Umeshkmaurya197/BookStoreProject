@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IBookService {
-    String addNewBook(BookDTO bookDTO);
+    BookData addNewBook(BookDTO bookDTO);
 
-    BookData getBookById(int bookId);
+    BookData getBookById(Integer bookId);
+
+//    List<BookData> getBookByCartId(Integer cartId);
 
     List<BookData> getAllBooks();
 
@@ -17,11 +19,18 @@ public interface IBookService {
 
     String deleteBookByName(String bookName);
 
-    BookData updateBookById(String token, BookDTO bookDTO);
+    BookData updateBookById(Integer bookId, BookDTO bookDTO);
 
-    BookData updateBookQuantity(String token, Integer bookQuantity);
+    BookData updateBookQuantity(Integer bookId, Integer bookQuantity);
 
     List<BookData> bookSortingByNameInAscending();
 
     List<BookData> bookSortingByNameInDescending();
+
+    List<BookData> bookSortingByPriceInAscending();
+
+    List<BookData> bookSortingByPriceInDescending();
+
+    List<BookData> bookSortingByNewestArrival();
+
 }

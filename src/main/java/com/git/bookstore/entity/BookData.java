@@ -9,8 +9,7 @@ public class BookData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id", nullable = false)
-    private int bookId;
-
+    private Integer bookId;
     private String bookName;
     private String authorName;
     private String bookDescription;
@@ -30,7 +29,7 @@ public class BookData {
         this.quantity = bookDTO.quantity;
     }
 
-    public BookData(int bookId, String bookName, String authorName, String bookDescription, String bookImg, Float price, Integer quantity) {
+    public BookData(Integer bookId, String bookName, String authorName, String bookDescription, String bookImg, Float price, Integer quantity) {
         this.bookId = bookId;
         this.bookName = bookName;
         this.authorName = authorName;
@@ -40,11 +39,11 @@ public class BookData {
         this.quantity = quantity;
     }
 
-    public int getBookId() {
+    public Integer getBookId() {
         return bookId;
     }
 
-    public void setBookId(int bookId) {
+    public void setBookId(Integer bookId) {
         this.bookId = bookId;
     }
 

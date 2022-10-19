@@ -21,31 +21,34 @@ public class UserService implements IUserService {
     TokenUtility tokenUtility;
     @Autowired
     EmailService emailService;
+
     //Creating new User Account
     @Override
-    public String addUser(UserDTO userDTO) {
+    public UserData addUser(UserDTO userDTO) {
         UserData userData = new UserData(userDTO);
-        userRepository.save(userData);
-        String token = TokenUtility.createToken(userData.getUserId());
-     //   emailService.sendMail(userDTO.email, "User successfully created", "Your account successfully created into Book Store ," + "\n\nyour details are :" + "\n User Id : " + userData.getUserId() + "" + "\n First Name : " + userData.getFirstName() + "" + "\n Last Name : " + userData.getLastName() + "" + "\n Email : " + userData.getEmail() + "" + "\n Address : " + userData.getAddress() + "" + "\n DOB : " + userData.getDOB() + "" + "\n password : " + userData.getPassword() + "" + "\n your id token is : " + token);
-        return token;
+        //   emailService.sendMail(userDTO.email, "User successfully created", "Your account successfully created into Book Store ," + "\n\nyour details are :" + "\n User Id : " + userData.getUserId() + "" + "\n First Name : " + userData.getFirstName() + "" + "\n Last Name : " + userData.getLastName() + "" + "\n Email : " + userData.getEmail() + "" + "\n Address : " + userData.getAddress() + "" + "\n DOB : " + userData.getDOB() + "" + "\n password : " + userData.getPassword() + "" + "\n your id token is : " + token);
+        return userRepository.save(userData);
     }
+
     // Login user
     @Override
     public String userLogIn(LoginDTO loginDTO) {
-        Optional<UserData> userDataExist = Optional.ofNullable(userRepository.findUserByLoginId(loginDTO.email).orElseThrow(() -> new CustomException("Entered user id " + loginDTO.email + " does not exist in data base ")));
-        if (userDataExist.get().getPassword().equals(loginDTO.getPassword())) {
-            userDataExist.get().setLogin(true);
-            return "Login Successfully";
+        UserData userDataExist = userRepository.findUserByLoginId(loginDTO.email).orElseThrow(() -> new CustomException("Entered user id " + loginDTO.email + " does not exist in data base "));
+        if (userDataExist.getPassword().equals(loginDTO.getPassword())) {
+            Integer userId = userDataExist.getUserId();
+            String token = TokenUtility.createToken(userId);
+            userRepository.save(userDataExist);
+            return token;
         }
         return " Wrong password ";
     }
+
     //get user by his userId
     @Override
     public UserData getUserById(String token) {
-        int userId = tokenUtility.decodeToken(token);
+        Integer userId = tokenUtility.decodeToken(token);
         UserData userData = userRepository.getUserById(userId);
-        if (userData==null) {
+        if (userData == null) {
             throw new CustomException("User id " + userId + " not found in data base ");
         } else {
             return userData;
@@ -54,20 +57,22 @@ public class UserService implements IUserService {
 
     // get user data by user's first name
     @Override
-    public List<UserData> getUserByFirstName(String firstName) {
-        List<UserData> userData = userRepository.findUserByFirstName(firstName);
+    public List<UserData> getUserByFirstName(String fullName) {
+        List<UserData> userData = userRepository.findUserByFirstName(fullName);
         if (userData.isEmpty()) {
-            throw new CustomException("First name " + firstName + " not found in the data base ");
+            throw new CustomException("First name " + fullName + " not found in the data base ");
         } else {
             return userData;
         }
     }
+
     //get user data by email
     @Override
     public Optional<UserData> getUserByEmail(String email) {
         return Optional.ofNullable(userRepository.findUserByEmail(email).orElseThrow(() -> new CustomException("First name " + email + " not found in the data base ")));
 
     }
+
     //get all users data from list
     @Override
     public List<UserData> getAllUsers() {
@@ -77,7 +82,7 @@ public class UserService implements IUserService {
     //change the password using token and password
     @Override
     public UserData changeUserPassword(String token, String password) {
-        int userId = tokenUtility.decodeToken(token);
+        Integer userId = tokenUtility.decodeToken(token);
         UserData userData = userRepository.findById(userId).orElseThrow(() -> new CustomException("User id " + userId + " does not exist in data base ."));
         userData.setPassword(password);
         userRepository.save(userData);

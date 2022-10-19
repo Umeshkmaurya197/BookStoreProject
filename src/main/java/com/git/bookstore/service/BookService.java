@@ -26,21 +26,30 @@ public class BookService implements IBookService {
         User can add new Books by this method
     */
     @Override
-    public String addNewBook(BookDTO bookDTO) {
+    public BookData addNewBook(BookDTO bookDTO) {
         BookData bookData = new BookData(bookDTO);
-        bookRepository.save(bookData);
-        String token = TokenUtility.createToken(bookData.getBookId());
+//        String token = TokenUtility.createToken(bookData.getBookId());
      //   emailService.sendMail("umeshkmaurya22@gmail.com", "New book added successfully ", "New book added successfully ." + "\n New book details, " + "\n   Book Name         : " + bookDTO.bookName + "" + "\n   Author Name       : " + bookDTO.authorName + "" + "\n   Book Description : " + bookDTO.bookDescription + "" + "\n   Book Image         : " + bookDTO.bookImg + "" + "\n   Book Price          : $ " + bookDTO.price + "" + "\n   Book Quantity     : " + bookDTO.quantity + " .");
-        return token;
+        return bookRepository.save(bookData);
     }
 
     /*
         Using this method User can get book data by book id
     */
     @Override
-    public BookData getBookById(int bookId) {
+    public BookData getBookById(Integer bookId) {
        return bookRepository.findById(bookId).orElseThrow(() -> new CustomException(" Book id " + bookId + " not exist in data base  "));
     }
+
+//    @Override
+//    public List<BookData> getBookByCartId(Integer cartId) {
+//        List<BookData> bookList = bookRepository.getBookByCartId(cartId);
+//        if(bookList.isEmpty()){
+//            throw new CustomException(" Book id " + cartId + " not exist in data base  ");
+//        }else {
+//            return bookList;
+//        }
+//    }
 
     /*
         This method will return List of all available books in book store
@@ -74,7 +83,7 @@ public class BookService implements IBookService {
     @Override
     public String deleteBookByName(String bookName) {
         Optional<BookData> bookData = bookRepository.findBooksByName(bookName);
-        int bookId = bookData.get().getBookId();
+        Integer bookId = bookData.get().getBookId();
         if (bookData.isPresent()) {
             bookRepository.deleteById(bookId);
             return " Book deleted successfully ";
@@ -87,8 +96,7 @@ public class BookService implements IBookService {
         Using this method user can (update / change) book information by using id .
     */
     @Override
-    public BookData updateBookById(String token, BookDTO bookDTO) {
-        int bookId = tokenUtility.decodeToken(token);
+    public BookData updateBookById(Integer bookId,BookDTO bookDTO) {
         Optional<BookData> bookData = bookRepository.findById(bookId);
         if (bookData.isPresent()) {
             BookData newBookData = new BookData(bookDTO);
@@ -103,8 +111,7 @@ public class BookService implements IBookService {
         This method will update/change book Quantity i.e. No of book
     */
     @Override
-    public BookData updateBookQuantity(String token, Integer bookQuantity) {
-        int bookId = tokenUtility.decodeToken(token);
+    public BookData updateBookQuantity(Integer bookId, Integer bookQuantity) {
         Optional<BookData> bookData = bookRepository.findById(bookId);
         if (bookData.isPresent()) {
             BookData newBookData = bookRepository.getBookById(bookId);
@@ -142,5 +149,34 @@ public class BookService implements IBookService {
         }
     }
 
+    @Override
+    public List<BookData> bookSortingByPriceInAscending() {
+        List<BookData> bookData = bookRepository.findAll();
+        if (bookData.isEmpty()) {
+            throw new CustomException("Book List is Empty in data base ");
+        } else {
+            return bookRepository.findAllBookByPriceInAscending();
+        }
+    }
+
+    @Override
+    public List<BookData> bookSortingByPriceInDescending() {
+        List<BookData> bookData = bookRepository.findAllBookByPriceInDescending();
+        if (bookData.isEmpty()) {
+            throw new CustomException("Book List is Empty in data base ");
+        } else {
+            return bookData;
+        }
+    }
+
+    @Override
+    public List<BookData> bookSortingByNewestArrival() {
+        List<BookData> bookData = bookRepository.findAllBookByNewestArrival();
+        if (bookData.isEmpty()) {
+            throw new CustomException("Book List is Empty in data base ");
+        } else {
+            return bookData;
+        }
+    }
 }
 

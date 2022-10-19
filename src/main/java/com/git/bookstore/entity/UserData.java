@@ -1,68 +1,54 @@
 package com.git.bookstore.entity;
 
+import com.git.bookstore.dto.LoginDTO;
 import com.git.bookstore.dto.UserDTO;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 public class UserData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
-    private int userId;
-
-    private String firstName;
-    private String lastName;
+    private Integer userId;
+    private String fullName;
     private String email;
-    private String address;
-    private LocalDate DOB;
     private String password;
-    private boolean login;
+    private Long mobileNumber;
+
     public UserData() {
     }
 
     public UserData(UserDTO userDTO) {
-        this.firstName = userDTO.firstName;
-        this.lastName = userDTO.lastName;
+        this.fullName = userDTO.fullName;
         this.email = userDTO.email;
-        this.address = userDTO.address;
-        this.DOB = userDTO.DOB;
         this.password = userDTO.password;
+        this.mobileNumber = userDTO.mobileNumber;
     }
-
-    public UserData(int userId, String firstName, String lastName, String email, String address, LocalDate DOB, String password) {
+    public UserData(LoginDTO loginDTO) {
+        this.email = loginDTO.email;
+        this.password = loginDTO.password;
+    }
+    public UserData(Integer userId, String fullName, String email, String password, Long mobileNumber) {
         this.userId = userId;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.fullName = fullName;
         this.email = email;
-        this.address = address;
-        this.DOB = DOB;
         this.password = password;
+        this.mobileNumber = mobileNumber;
     }
-
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
-
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getEmail() {
@@ -73,22 +59,6 @@ public class UserData {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public LocalDate getDOB() {
-        return DOB;
-    }
-
-    public void setDOB(LocalDate DOB) {
-        this.DOB = DOB;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -97,25 +67,11 @@ public class UserData {
         this.password = password;
     }
 
-    public boolean isLogin() {
-        return login;
+    public Long getMobileNumber() {
+        return mobileNumber;
     }
 
-    public void setLogin(boolean login) {
-        this.login = login;
-    }
-
-    @Override
-    public String toString() {
-        return "UserData{" +
-                "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", address='" + address + '\'' +
-                ", DOB=" + DOB +
-                ", password='" + password + '\'' +
-                ", login=" + login +
-                '}';
+    public void setMobileNumber(Long mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 }

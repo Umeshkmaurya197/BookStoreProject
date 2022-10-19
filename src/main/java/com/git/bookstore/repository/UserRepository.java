@@ -13,9 +13,9 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserData, Integer> {
 
     @Query(value = "Select * from book_store.user_data e where e.user_id=:userId",nativeQuery = true)
-    UserData getUserById(@Param(value = "userId")int useId);
-    @Query(value = "Select * from book_store.user_data e where e.first_name=:fName",nativeQuery = true)
-    List<UserData> findUserByFirstName(@Param(value="fName")String firstName);
+    UserData getUserById(@Param(value = "userId")Integer useId);
+    @Query(value = "Select * from book_store.user_data e where e.full_name=:fName",nativeQuery = true)
+    List<UserData> findUserByFirstName(@Param(value="fName")String fullName);
 
     @Query(value = "Select * from book_store.user_data e where e.email=:email",nativeQuery = true)
     Optional<UserData> findUserByEmail(@Param(value="email")String email);

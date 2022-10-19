@@ -1,37 +1,41 @@
 package com.git.bookstore.entity;
 
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 @Entity
+@ToString
+@Table(name = "cart")
 public class Cart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_id", nullable = false)
-    private int cartId;
+    private Integer cartId;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserData userData;
     @ElementCollection
     @CollectionTable(name = "cart_books", joinColumns = @JoinColumn(name = "cart_id"))
-    public List<Integer> bookData;
+    public List<Integer> bookId;
     @ElementCollection
     @CollectionTable(name = "cart_book_quantities", joinColumns = @JoinColumn(name = "cart_id"))
     public List<Integer> quantity;
-
     public Cart() {
     }
 
-    public Cart(int cartId, UserData userData, List<Integer> bookData, List<Integer> quantity) {
+    public Cart(Integer cartId, UserData userData, List<Integer> bookId ,List<Integer> quantity) {
         this.cartId = cartId;
         this.userData = userData;
-        this.bookData = bookData;
+        this.bookId = bookId;
         this.quantity = quantity;
     }
 
     public Cart(UserData userData, List<Integer> bookId, List<Integer> quantity) {
         this.userData = userData;
-        this.bookData = bookId;
+        this.bookId = bookId;
         this.quantity = quantity;
     }
 
@@ -43,20 +47,20 @@ public class Cart {
         this.userData = userData;
     }
 
-    public int getCartId() {
+    public Integer getCartId() {
         return cartId;
     }
 
-    public void setCartId(int cartId) {
+    public void setCartId(Integer cartId) {
         this.cartId = cartId;
     }
 
-    public List<Integer> getBookData() {
-        return bookData;
+    public List<Integer> getBookId() {
+        return bookId;
     }
 
-    public void setBookData(List<Integer> bookData) {
-        this.bookData = bookData;
+    public void setBookId(List<Integer> bookId) {
+        this.bookId = bookId;
     }
 
     public List<Integer> getQuantity() {
@@ -66,4 +70,5 @@ public class Cart {
     public void setQuantity(List<Integer> quantity) {
         this.quantity = quantity;
     }
+
 }

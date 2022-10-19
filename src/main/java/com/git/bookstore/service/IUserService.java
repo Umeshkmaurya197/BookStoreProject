@@ -8,13 +8,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
-    String addUser(UserDTO userDTO);
+    UserData addUser(UserDTO userDTO);
 
     String userLogIn(LoginDTO loginDTO);
 
     UserData getUserById(String token);
 
-    List<UserData> getUserByFirstName(String firstName);
+    List<UserData> getUserByFirstName(String fullName);
 
     Optional<UserData> getUserByEmail(String email);
 

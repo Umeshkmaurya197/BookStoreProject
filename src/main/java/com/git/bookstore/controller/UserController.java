@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin
 @RestController
 @RequestMapping("/book-store/user")
 public class UserController {
@@ -26,30 +26,30 @@ public class UserController {
 
     //Curl - http://localhost:8080/book-store/user/get-user-by-id/
     @GetMapping("/get-user-by-id")
-    public ResponseEntity<ResponseDTO> getUserById(@Param(value = "token")String token ) {
+    public ResponseEntity<ResponseDTO> getUserById(@Param(value = "token") String token) {
         ResponseDTO responseDTO = new ResponseDTO("Based on user id  found data ", userService.getUserById(token));
-        return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
-    //Curl - http://localhost:8080/book-store/user/get-user-by-first-name/omi
-    @GetMapping("/get-user-by-first-name/{firstName}")
-    public ResponseEntity<ResponseDTO> getUserByFirstName(@PathVariable String firstName) {
-        ResponseDTO responseDTO = new ResponseDTO("Based on user name " + firstName + " found data", userService.getUserByFirstName(firstName));
-        return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
+    //Curl - http://localhost:8080/book-store/user/get-user-by-full-name/omi
+    @GetMapping("/get-user-by-full-name/{fullName}")
+    public ResponseEntity<ResponseDTO> getUserByFullName(@PathVariable String fullName) {
+        ResponseDTO responseDTO = new ResponseDTO("Based on user name " + fullName + " found data", userService.getUserByFirstName(fullName));
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     //Curl - http://localhost:8080/book-store/user/get-user-by-email/umeshkmaurya22@gmail.com
     @GetMapping("/get-user-by-email/{email}")
     public ResponseEntity<ResponseDTO> getUserByEmail(@PathVariable String email) {
         ResponseDTO responseDTO = new ResponseDTO("Based on email " + email + " found data ", userService.getUserByEmail(email));
-        return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     //Curl - http://localhost:8080/book-store/user/get-all-users
     @GetMapping("/get-all-users")
     public ResponseEntity<ResponseDTO> getAllUsers() {
         ResponseDTO responseDTO = new ResponseDTO("List of all Users ", userService.getAllUsers());
-        return new ResponseEntity<>(responseDTO, HttpStatus.FOUND);
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     //Curl - http://localhost:8080/book-store/user/change-password?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyfQ.S4iy11IshEhLyc1J5koLwTdRCKZdYFB8pvBq13oECwY&password=Signature7

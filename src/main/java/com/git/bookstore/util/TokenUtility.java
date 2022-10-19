@@ -14,7 +14,7 @@ public class TokenUtility {
     private static final String TOKEN_SECRET = "Signature";
 
     //use to create new token
-    public static String createToken(int userId) {
+    public static String createToken(Integer userId) {
         try {
             //to set Algorithm
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
@@ -29,8 +29,8 @@ public class TokenUtility {
     }
 
     //use to decode the token
-    public int decodeToken(String token) {
-        int userId;
+    public Integer decodeToken(String token) {
+        Long userId;
         //for verification algorithm
         Verification verification = null;
         try {
@@ -43,8 +43,8 @@ public class TokenUtility {
 
         DecodedJWT decodedJWT = jwtVerifier.verify(token);
         Claim claim = decodedJWT.getClaim("user_id");
-        userId = claim.asInt();
-        return userId;
+        userId = Long.valueOf(claim.asInt());
+        return Math.toIntExact(userId);
     }
 
 }
