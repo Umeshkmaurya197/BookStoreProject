@@ -24,7 +24,7 @@ public class UserController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
-    //Curl - http://localhost:8080/book-store/user/get-user-by-id/
+    //Curl - http://localhost:8080/book-store/user/get-user-by-id
     @GetMapping("/get-user-by-id")
     public ResponseEntity<ResponseDTO> getUserById(@Param(value = "token") String token) {
         ResponseDTO responseDTO = new ResponseDTO("Based on user id  found data ", userService.getUserById(token));

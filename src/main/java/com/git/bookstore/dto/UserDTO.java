@@ -11,10 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-
     public String fullName;
     public String email;
     public String password;
     public Long mobileNumber;
-
 }

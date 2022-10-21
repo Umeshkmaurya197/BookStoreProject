@@ -20,38 +20,53 @@ public class CartController {
 
     //Curl - http://localhost:8080/book-store/cart/add-cart
     @PostMapping("/add-cart")
-    public ResponseEntity<ResponseDTO> addCart(@Param(value = "token") String token,@RequestBody CartDTO cartDTO) {
+    public ResponseEntity<ResponseDTO> addCart(@Param(value = "token") String token, @RequestBody CartDTO cartDTO) {
         ResponseDTO responseDTO = new ResponseDTO("your cart is ready ", cartService.addToCart(token, cartDTO));
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     //Curl - http://localhost:8080/book-store/cart/get-cart-books-by-user-id
     @GetMapping("/get-cart-books-by-user-id")
-    public ResponseEntity<ResponseDTO> getCartBooksByUserId(@Param(value="token") String token) {
+    public ResponseEntity<ResponseDTO> getCartBooksByUserId(@Param(value = "token") String token) {
         ResponseDTO responseDTO = new ResponseDTO("Based on user cart Books  ", cartService.getCartBooksByUserId(token));
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     //Curl - http://localhost:8080/book-store/cart/get-cart-by-user-id
     @GetMapping("/get-cart-by-user-id")
-    public ResponseEntity<ResponseDTO> getCartByUserId(@Param(value="token") String token) {
+    public ResponseEntity<ResponseDTO> getCartByUserId(@Param(value = "token") String token) {
         ResponseDTO responseDTO = new ResponseDTO("Based on user cart Books  ", cartService.getCartByUserId(token));
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     //Curl - http://localhost:8080/book-store/cart/delete-cart-by-user-id
     @DeleteMapping("/delete-cart-by-user-id")
-    public ResponseEntity<ResponseDTO> deleteCartByUserId(@Param(value="token") String token) {
+    public ResponseEntity<ResponseDTO> deleteCartByUserId(@Param(value = "token") String token) {
         ResponseDTO responseDTO = new ResponseDTO("Based on user cart Books  ", cartService.deleteCartByUserId(token));
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
 
     //Curl - http://localhost:8080/book-store/cart/increase-cart-quantity-by-user-id/2
-    @GetMapping("/increase-cart-quantity-by-user-id/{bookId}/{quantity}")
-    public ResponseEntity<ResponseDTO> increaseQuantityByUserId(@Param(value="token") String token,Integer bookId,List<Integer> quantity) {
-        ResponseDTO responseDTO = new ResponseDTO("Based on user cart Books  ", cartService.increaseCartQuantityByUserId(token,bookId,quantity));
+    @GetMapping("/increase-cart-quantity-by-user-id/{bookId}")
+    public ResponseEntity<ResponseDTO> increaseQuantityByUserId(@Param(value = "token") String token,@PathVariable Integer bookId) {
+        ResponseDTO responseDTO = new ResponseDTO("Based on user cart Books  ", cartService.increaseCartQuantityByUserId(token, bookId));
         return new ResponseEntity<>(responseDTO, HttpStatus.OK);
     }
+
+    //Curl - http://localhost:8080/book-store/cart/decrease-cart-quantity-by-user-id/2
+    @GetMapping("/decrease-cart-quantity-by-user-id/{bookIdentity}")
+    public ResponseEntity<ResponseDTO> decreaseQuantityByUserId(@Param(value = "token") String token,@PathVariable Integer bookIdentity) {
+        ResponseDTO responseDTO = new ResponseDTO("Based on user cart Books  ", cartService.decreaseCartQuantityByUserId(token, bookIdentity));
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
+    //Curl - http://localhost:8080/book-store/cart/remove-book-from-cart-by-user-id/2
+    @GetMapping("/remove-book-from-cart-by-user-id/{bookIdentity}")
+    public ResponseEntity<ResponseDTO> removeBookFromCartByUserId(@Param(value = "token") String token,@PathVariable Integer bookIdentity) {
+        ResponseDTO responseDTO = new ResponseDTO("Based on user cart Books  ", cartService.removeBookFromCartByUserId(token, bookIdentity));
+        return new ResponseEntity<>(responseDTO, HttpStatus.OK);
+    }
+
 
 
 }

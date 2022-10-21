@@ -103,24 +103,76 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public List<Integer> increaseCartQuantityByUserId(String token, Integer bookIdentity, List<Integer> quantity) {
+    public Cart increaseCartQuantityByUserId(String token, Integer bookIdentity) {
         UserData userData = userService.getUserById(token);
         Integer userid = userData.getUserId();
         Cart cart = cartRepository.findCartByUserId(userid);
-        Integer cartId = cart.getCartId();
-        if(cart!=null){
-            List<Integer> bookIdList = cart.bookId;
-            for(int i=0;i<bookIdList.size();i++){
-                if(bookIdList.get(i)==bookIdentity){
-                    cart.setQuantity(quantity);
+        if (cart != null) {
+            List<Integer> bookIdList = cart.getBookId();
+            List<Integer> quantityList = cart.getQuantity();
+            System.out.println(" BookId List 1 ==>> : " + bookIdList);
+            System.out.println(" Book Quantity List 2 ==>> : " + quantityList);
+            int quantityIndex = bookIdList.indexOf(bookIdentity);
+            System.out.println(" book bookIdentity 2.5 ==>> : " + bookIdentity);
+            System.out.println(" Quantity Index 3 ==>> : " + quantityIndex);
+            for (int i = 0; i <= bookIdList.size(); i++) {
+                if (i == quantityIndex) {
+                    System.out.println(" index i 4 ==>> : " + i);
+                    quantityList.set(i, quantityList.get(i) + 1);
                 }
+                System.out.println(" book Quantity List 5 ==>> : " + quantityList);
             }
-            return quantity;
-        }else
-            throw new CustomException("Cart is null");
+            System.out.println(" book Quantity List 6==>> : " + cart);
+            return cartRepository.save(cart);
+        } else throw new CustomException("Cart is null");
     }
 
+    @Override
+    public Cart decreaseCartQuantityByUserId(String token, Integer bookIdentity) {
+        UserData userData = userService.getUserById(token);
+        Integer userid = userData.getUserId();
+        Cart cart = cartRepository.findCartByUserId(userid);
+        if (cart != null) {
+            List<Integer> bookIdList = cart.getBookId();
+            List<Integer> quantityList = cart.getQuantity();
+            int quantityIndex = bookIdList.indexOf(bookIdentity);
+            for (int i = 0; i <= bookIdList.size(); i++) {
+                if (i == quantityIndex) {
+                    if (quantityList.get(i) > 1) {
+                        quantityList.set(i, quantityList.get(i) - 1);
+                    }
+                }
+            }
+            return cartRepository.save(cart);
+        } else throw new CustomException("Cart is null");
+    }
+
+    @Override
+    public Cart removeBookFromCartByUserId(String token, Integer bookIdentity) {
+        UserData userData = userService.getUserById(token);
+        Integer userid = userData.getUserId();
+        Cart cart = cartRepository.findCartByUserId(userid);
+        if (cart != null) {
+            List<Integer> bookIdList = cart.getBookId();
+            List<Integer> quantityList = cart.getQuantity();
+            System.out.println(" BookId List 1 ==>> : " + bookIdList);
+            System.out.println(" Book Quantity List 2 ==>> : " + quantityList);
+            int bookIndex = bookIdList.indexOf(bookIdentity);
+            System.out.println(" book bookIdentity 2.5 ==>> : " + bookIdentity);
+            System.out.println(" Quantity Index 3 ==>> : " + bookIndex);
+            for (int i = 0; i <= bookIdList.size(); i++) {
+                if (i == bookIndex) {
+                    bookIdList.remove(i);
+                    quantityList.remove(i);
+                }
+            }
+            return cartRepository.save(cart);
+        } else throw new CustomException("Cart not found");
+    }
 }
+
+
+
 
 
 

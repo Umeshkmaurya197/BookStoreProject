@@ -14,6 +14,10 @@ public interface ICartService {
     List<BookData> getCartBooksByUserId(String token);
 
     String deleteCartByUserId(String token);
-    List<Integer> increaseCartQuantityByUserId(String token, Integer bookId, List<Integer> quantity);
+    Cart increaseCartQuantityByUserId(String token, Integer bookIdentity);
+
+    Cart decreaseCartQuantityByUserId(String token, Integer bookIdentity);
+
+    Cart removeBookFromCartByUserId(String token, Integer bookIdentity);
 }
 
