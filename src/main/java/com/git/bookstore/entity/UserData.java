@@ -2,9 +2,10 @@ package com.git.bookstore.entity;
 
 import com.git.bookstore.dto.LoginDTO;
 import com.git.bookstore.dto.UserDTO;
+import lombok.ToString;
 
 import javax.persistence.*;
-
+@ToString
 @Entity
 public class UserData {
     @Id

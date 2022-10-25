@@ -77,17 +77,21 @@ public class CartService implements ICartService {
     @Override
     public List<BookData> getCartBooksByUserId(String token) {
         UserData userData = userService.getUserById(token);
+        System.out.println("userData 1 ====>  "+userData.toString());
         Integer userId = userData.getUserId();
+        System.out.println("userId 2 =====> "+userId);
         Cart cart = cartRepository.findCartByUserId(userId);
+        System.out.println("cart 3 =====> "+cart);
         Integer cartId = cart.getCartId();
+        System.out.println("cartId 4 =====>  "+cartId);
         List<BookData> bookDataList = bookRepository.getBookByCartId(cartId);
+        System.out.println("book List from cart 5 ====>  "+bookDataList);
         if (cart != null) {
             if (bookDataList != null) {
+                System.out.println("book List from cart inside of if condition 6 ====>  "+bookDataList);
                 return bookDataList;
             } else throw new CustomException("book not found in the cart ");
-        } else {
-            throw new CustomException("cart not found in the cart ");
-        }
+        } else throw new CustomException("cart not found in the cart ");
     }
 
     @Override
