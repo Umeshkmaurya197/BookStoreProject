@@ -44,21 +44,32 @@ public class OrderService implements IOrderService {
                         Integer bookQuantity = orderDTO.getCart().getQuantity().get(i);
                         totalPrice += bookPrice * bookQuantity;
                         orderDTO.setTotalPrice(totalPrice);
-                        int availableBookQuantity= bookService.getBookById(bookIdList.get(i)).getQuantity();
+                        int availableBookQuantity = bookService.getBookById(bookIdList.get(i)).getQuantity();
                         int orderedBookQuantity = orderDTO.getCart().getQuantity().get(i);
-                        int currentBookQuantity =availableBookQuantity-orderedBookQuantity;
+                        int currentBookQuantity = availableBookQuantity - orderedBookQuantity;
                         bookService.getBookById(bookIdList.get(i)).setQuantity(currentBookQuantity);
-                    }else{
+                    } else {
                         throw new CustomException("you book quantity exceeds our book quantity");
                     }
                 }
                 Order order = new Order(orderDTO);
                 order.setDate(LocalDate.now());
                 return orderRepository.save(order);
-            } else {
-                throw new CustomException("Cart id Not Found");
-            }
+            } else throw new CustomException("Cart id Not Found");
         } else throw new CustomException("User id not found.");
+    }
+
+    @Override
+    public List<Order> getOrderDetails(String token) {
+        Cart cart = cartService.getCartByUserId(token);
+        Integer cartId = cart.getCartId();
+        List<Order> orderData = orderRepository.getOrderByCartId(cartId);
+        if (cart != null) {
+            if (orderData != null) {
+                return orderData;
+            } else throw new CustomException("Order not found");
+        } else throw new CustomException("Cart not found");
+
     }
 }
 

@@ -23,4 +23,9 @@ public class OrderController {
         return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
+    @GetMapping("/get-order-data")
+    public ResponseEntity<ResponseDTO> getOrderData(@Param(value = "token")String token) {
+        ResponseDTO responseDTO = new ResponseDTO("Order Details ",orderService.getOrderDetails(token));
+        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+    }
 }
